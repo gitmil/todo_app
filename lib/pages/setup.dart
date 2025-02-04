@@ -1,21 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:todo_app/consts/colors.dart';
-import 'package:todo_app/data/auth_data.dart';
 
-class Login extends StatefulWidget {
+import '../data/auth_data.dart';
+
+class Setup extends StatefulWidget {
   final VoidCallback show;
-  const Login(this.show, {super.key});
+  const Setup(this.show, {super.key});
 
   @override
-  State<Login> createState() => _LoginState();
+  State<Setup> createState() => _SetupState();
 }
 
-class _LoginState extends State<Login> {
+class _SetupState extends State<Setup> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  final passwordConfirmController = TextEditingController();
 
   final FocusNode emailFocusNode = FocusNode();
   final FocusNode passwordFocusNode = FocusNode();
+  final FocusNode passwordConfirmFocusNode = FocusNode();
 
   @override
   void initState() {
@@ -28,6 +31,12 @@ class _LoginState extends State<Login> {
     });
 
     passwordFocusNode.addListener(() {
+      setState(
+        () {},
+      );
+    });
+
+    passwordConfirmFocusNode.addListener(() {
       setState(
         () {},
       );
@@ -47,6 +56,9 @@ class _LoginState extends State<Login> {
               SizedBox(height: 10),
               input('Password', Icons.password, passwordController,
                   passwordFocusNode),
+              SizedBox(height: 10),
+              input('Confirm Password', Icons.password,
+                  passwordConfirmController, passwordConfirmFocusNode),
               SizedBox(height: 10),
               account(),
               SizedBox(height: 10),
@@ -71,11 +83,12 @@ class _LoginState extends State<Login> {
           borderRadius: BorderRadius.circular(10),
         ),
         child: GestureDetector(
-          onTap: (){
-            AuthenticationRemote().login(emailController.text, passwordController.text);
+          onTap: () {
+            AuthenticationRemote().register(emailController.text,
+                passwordController.text, passwordConfirmController.text);
           },
           child: Text(
-            'LogIn',
+            'SingUP',
             style: TextStyle(
               color: Colors.white,
               fontSize: 20,
@@ -94,16 +107,18 @@ class _LoginState extends State<Login> {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           Text(
-            'Don\'t have an account?',
+            'Have an account?',
             style: TextStyle(fontSize: 14, color: Colors.grey[700]),
           ),
           SizedBox(width: 5),
           GestureDetector(
             onTap: widget.show,
             child: Text(
-              'Sign Up',
+              'Login',
               style: TextStyle(
-                  fontSize: 14, color: Colors.blue, fontWeight: FontWeight.bold),
+                  fontSize: 14,
+                  color: Colors.blue,
+                  fontWeight: FontWeight.bold),
             ),
           ),
         ],
